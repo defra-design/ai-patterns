@@ -1,0 +1,2 @@
+# ai-patterns
+PLEASE PROVIDE A DESCRIPTION
