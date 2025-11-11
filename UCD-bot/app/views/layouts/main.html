@@ -4,13 +4,33 @@ https://prototype-kit.service.gov.uk/docs/how-to-use-layouts
 #}
 
 {% extends "govuk-prototype-kit/layouts/govuk-branded.njk" %}
-{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "components/defra-header/macro.njk" import defraHeader %}
 
 {% block header %}
 
-    {{ govukHeader() }}
-    {{ govukServiceNavigation({
-        serviceName: serviceName
-    })}}
+    {{ defraHeader({
+        organisationLabel: {
+            text: "Defra",
+            href: "/"
+        },
+        serviceLabel: {
+            text: serviceName,
+            href: "/"
+        },
+        navigation: {
+            label: "Account navigation",
+            items: [
+                {
+                    text: "Your account",
+                    href: "#",
+                    active: false
+                },
+                {
+                    text: "Sign out",
+                    href: "#"
+                }
+            ]
+        }
+    }) }}
 
 {% endblock %}

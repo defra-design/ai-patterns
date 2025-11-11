@@ -3,4 +3,10 @@
 // https://prototype-kit.service.gov.uk/docs/adding-css-javascript-and-images
 // 
 
+// Import Inter font for Defra branding
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+// Import Defra header component
+@import "components/defra-header";
+
 // Add extra styles here
