@@ -1,9 +1,6 @@
 ---
 alwaysApply: true
 ---
----
-alwaysApply: true
----
 
  GOV.UK Prototype Kit - Cursor Rules
 
@@ -18,10 +15,22 @@ As a Cursor AI assistant working on this GOV.UK Prototype Kit project:
 - **Suggest improvements** that align with user-centered design principles
 
 ## Project Overview
-This project is a web application built using the GOV.UK Prototype Kit for rapid prototyping of user-centered services. The application is:
+This project is a web application built using the GOV.UK Prototype Kit for rapid prototyping of internal Defra services. The application is:
+- **For internal users**: Civil servants and Defra staff, not the public
+- **Department**: Department for Environment, Food and Rural Affairs (Defra)
 - Accessible and user-friendly
 - Compliant with government standards
-- Used for gathering user feedback and iterating on design concepts
+- Used for gathering user feedback and iterating on design concepts with internal users
+
+## Internal User Considerations
+When designing for internal users (civil servants):
+- **Assume domain knowledge**: Users have specialist knowledge of Defra processes and terminology
+- **Efficiency over explanation**: Internal users need to complete tasks quickly and efficiently
+- **Professional tone**: Content can be more formal and use appropriate technical terms
+- **Reduced hand-holding**: Less need for extensive guidance compared to public services
+- **Focus on productivity**: Prioritise speed, keyboard shortcuts, and batch operations
+- **Role-based access**: Consider different user roles and permissions within Defra
+- **Integration with other systems**: May need to work alongside existing internal tools
 
 ## Technical Framework
 - **Server-side**: Node.js and Express
@@ -64,15 +73,19 @@ This project is a web application built using the GOV.UK Prototype Kit for rapid
   - All inputs properly labelled
 
 ### Content Design
-- Follow GOV.UK style guide:
+- Follow GOV.UK style guide with adaptations for internal users:
   - Sentence case
   - ISO date format (e.g., "24 April 2025")
-  - Plain English
+  - Clear, professional language (can use Defra-specific terminology)
   - No ampersands
   - Active voice
 - Front-load key information
 - One idea per sentence
-- Address users directly using first person
+- Address users directly using second person ("you")
+- For internal services, you can:
+  - Use technical terms and acronyms familiar to Defra staff
+  - Be more concise where appropriate
+  - Focus on task completion rather than extensive explanation
 
 ### Code Organization
 - Define and reuse Nunjucks filters (e.g., `toMonth`, `toMoney`)
