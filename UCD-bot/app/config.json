@@ -1,5 +1,5 @@
 {
-  "serviceName": "UCD bot",
+  "serviceName": "AI patterns",
   "plugins": {
     "govuk-frontend": {
       "rebrand": true

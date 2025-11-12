@@ -1,4 +1,4 @@
-{% extends "layouts/main.html" %}
+{% extends "layouts/main-no-nav.html" %}
 
 {% set pageName="Home" %}
 
@@ -7,20 +7,23 @@
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
 
+
+    <span class="govuk-caption-xl">AI enablement and capabilities team</span>
+
     <h1 class="govuk-heading-xl">
       {{ serviceName }}
     </h1>
 
     <p class="govuk-body">This is a prototype for testing and research purposes only.</p>
 
-    <h2 class="govuk-heading-m">Prototype versions</h2>
+    <h2 class="govuk-heading-m">UCD bot prototypes</h2>
 
     <ul class="govuk-list govuk-list--bullet">
       <li>
-        <a href="/version-1/password" class="govuk-link">Version 1 - UCD bot</a>
+        <a href="/version-1/password" class="govuk-link">Version 1 - Password and simple input pages</a>
       </li>
       <li>
-        <a href="/version-2/password" class="govuk-link">Version 2 - UCD bot (chat interface)</a>
+        <a href="/version-2/password" class="govuk-link">Version 2 - Simple chat interface</a>
       </li>
     </ul>
 
