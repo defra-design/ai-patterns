@@ -1,8 +1,0 @@
-{
-  "serviceName": "AI patterns",
-  "plugins": {
-    "govuk-frontend": {
-      "rebrand": true
-    }
-  }
-}

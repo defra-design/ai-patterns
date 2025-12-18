@@ -1,0 +1,124 @@
+{% extends "layouts/page.njk" %}
+
+{% from "govuk/components/label/macro.njk" import govukLabel %}
+{% from "govuk/components/hint/macro.njk" import govukHint %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "model-select/macro.njk" import defraModelSelect %}
+{% from "conversation/macro.njk" import defraConversation %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+
+      {% if errorMessage %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: [
+            {
+              text: errorMessage,
+              href: "#question"
+            }
+          ]
+        }) }}
+      {% endif %}
+
+      {% if messages %}
+        <h2 class="govuk-heading-l govuk-!-margin-bottom-6">
+          AI assistant
+        </h2>
+
+        {{ defraConversation({
+          messages: messages
+         }) }}
+
+      {% endif %}
+
+    </div>
+  </div>
+
+  {% if not messages %}
+    <div class="app-prompt-input-container">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">
+            AI assistant
+          </h1>
+
+          {{ defraConversation({
+            messages: messages
+          }) }}
+
+          <form action="/start" method="post" novalidate>
+
+            {{ govukTextarea({
+              name: "question",
+              id: "question",
+              value: question if question else "",
+              label: {
+                text: "Enter a message",
+                classes: "govuk-label--m",
+                isPageHeading: false
+              },
+              hint: {
+                text: "For example, 'How do I design an accessible form?' or 'Can you help me put together a research plan?'"
+              }
+            }) }}
+
+            <div class="govuk-button-group">
+              {{ govukButton({
+                text: "Send",
+                classes: "govuk-button--secondary"
+              }) }}
+              <p class="govuk-body"><a href="/start/clear" class="govuk-link">Clear conversation</a>.</p>
+            </div>
+
+            {{ defraModelSelect({
+                    models: models,
+                    modelName: modelName
+            }) }}
+
+          </form>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="app-prompt-input-container">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+          <form action="/start" method="post" novalidate>
+             {{ govukTextarea({
+              name: "question",
+              id: "question",
+              value: question if question else "",
+              label: {
+                text: "Enter a question or a prompt?",
+                classes: "govuk-label--m",
+                isPageHeading: false
+              },
+              hint: {
+                text: "For example, 'How do I design an accessible form?' or 'Can you help me put together a research plan?'"
+              }
+            }) }}
+
+            <div class="govuk-button-group">
+              {{ govukButton({
+                text: "Send",
+                classes: "govuk-button--secondary"
+              }) }}
+              <p class="govuk-body"><a href="/start/clear" class="govuk-link">Clear conversation</a></p>
+            </div>
+
+            {{ defraModelSelect({
+                    models: models,
+                    modelName: modelName
+            }) }}
+
+          </form>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "layouts/page.njk" %}
+
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      {% if errors %}
+        {{ govukErrorSummary({
+          titleText: "There is a problem",
+          errorList: errors
+        }) }}
+      {% endif %}
+
+      <h1 class="govuk-heading-xl">Give feedback on the AI Assistant</h1>
+
+      <form action="/feedback" method="post" novalidate>
+        <input type="hidden" name="conversationId" value="{{ conversationId }}" />
+
+        {{ govukRadios({
+          name: "wasHelpful",
+          fieldset: {
+            legend: {
+              text: "Overall, how useful was the AI Assistant for your task?",
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          errorMessage: fieldErrors.wasHelpful if fieldErrors and fieldErrors.wasHelpful else undefined,
+          items: [
+            {
+              value: "very-useful",
+              text: "Very useful",
+              checked: wasHelpful == "very-useful"
+            },
+            {
+              value: "useful",
+              text: "Useful",
+              checked: wasHelpful == "useful"
+            },
+            {
+              value: "neither",
+              text: "Neither useful or not useful",
+              checked: wasHelpful == "neither"
+            },
+            {
+              value: "not-useful",
+              text: "Not useful",
+              checked: wasHelpful == "not-useful"
+            },
+            {
+              value: "not-at-all-useful",
+              text: "Not at all useful",
+              checked: wasHelpful == "not-at-all-useful"
+            }
+          ]
+        }) }}
+
+        {{ govukCharacterCount({
+          name: "comment",
+          id: "comment",
+          maxlength: 1200,
+          label: {
+            text: "How could we improve the AI Assistant?",
+            classes: "govuk-label--m"
+          },
+          hint: {
+            text: "Tell us what you were trying to do and how well it worked. Do not include personal or sensitive information."
+          },
+          errorMessage: fieldErrors.comment if fieldErrors and fieldErrors.comment else undefined,
+          value: comment
+        }) }}
+
+        <details class="govuk-details" data-module="govuk-details">
+          <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">
+              How we use your feedback
+            </span>
+          </summary>
+          <div class="govuk-details__text">
+            <p class="govuk-body">We use your feedback to improve the AI Assistant. We collect:</p>
+            <ul class="govuk-list govuk-list--bullet">
+              <li>your rating of how useful the AI was</li>
+              <li>any comments you provide</li>
+              <li>technical information about your session</li>
+            </ul>
+            <p class="govuk-body">We do not collect your conversations or prompts unless you include them in your comments.</p>
+          </div>
+        </details>
+
+        {{ govukButton({
+          text: "Send feedback"
+        }) }}
+      </form>
+
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+services:
+  ai-defra-search-frontend:
+    build:
+      target: development
+    image: ai-defra-search-frontend-development
+    container_name: ai-defra-search-frontend-test
+    command: npm run test
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PORT: 3000
+      NODE_ENV: development
+      REDIS_HOST: redis
+      USE_SINGLE_INSTANCE_CACHE: true
+      PROTOTYPE_PASSWORD: correctpassword
+      AUTH_ENABLED: false
+      MS_ENTRA_TENANT_ID: cb2d380f-8056-494b-bfad-cfcaf767c0b3
+      MS_ENTRA_CLIENT_ID: 28434819-c64a-4b95-bb23-0f6202bcfc02
+      MS_ENTRA_CLIENT_SECRET: client-secret-value
+      MS_ENTRA_REDIRECT_HOST: http://localhost:3000
+    volumes:
+      - ./src/:/home/node/src
+      - ./tests/:/home/node/tests
+      - ./package.json:/home/node/package.json
+      - ./coverage:/home/node/coverage

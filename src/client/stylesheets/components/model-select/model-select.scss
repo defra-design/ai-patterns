@@ -1,0 +1,27 @@
+@use "govuk-frontend" as *;
+
+// Model Select Component Styles
+
+.govuk-radios__input {
+  margin-right: govuk-spacing(4);
+}
+
+.defra-model-select__label {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0;
+  margin-left: 0;
+  margin-right: govuk-spacing(6);
+}
+
+.defra-model-select__model-name {
+  font-weight: 600;
+  margin-bottom: govuk-spacing(1);
+}
+
+.defra-model-select__model-description {
+  @include govuk-font($size: 16);
+  color: govuk-colour("dark-grey");
+  font-weight: normal;
+  text-align: left;
+}

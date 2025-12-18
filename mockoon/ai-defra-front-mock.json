@@ -1,0 +1,259 @@
+{
+  "uuid": "8caf72ae-82ab-44f6-a1fa-e31ab11d8f4e",
+  "lastMigration": 33,
+  "name": "Chat Service API",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3018,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "e1a49ff8-a649-43b6-9c44-93a6a9a15163",
+      "type": "http",
+      "documentation": "Send a chat message",
+      "method": "post",
+      "endpoint": "chat",
+      "responses": [
+        {
+          "uuid": "58fc13fb-a892-445a-b066-fa8d254100fd",
+          "body": "{\n  \"conversation_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"model\": \"user-input\",\n      \"content\": \"What is UCD?\",\n      \"timestamp\": \"2025-12-07T12:00:00Z\"\n    },\n    {\n      \"role\": \"assistant\",\n      \"model\": \"Haiku\",\n      \"content\": \"User-Centred Design (UCD) is an iterative design process that focuses on understanding users and their needs throughout the entire design and development process. It involves:\\n\\n1. **Understanding users**: Researching and understanding the needs, wants, and limitations of end users at each stage of the design process.\\n\\n2. **Involving users**: Actively engaging users through interviews, testing, and feedback sessions to ensure the design meets their needs.\\n\\n3. **Iterative design**: Continuously refining and improving designs based on user feedback and testing results.\\n\\n4. **Multidisciplinary approach**: Bringing together different perspectives including designers, developers, researchers, and users.\\n\\nIn the context of Defra services, UCD helps ensure that government services are accessible, easy to use, and meet the needs of citizens, farmers, and other stakeholders who interact with Defra's digital services.\",\n      \"timestamp\": \"2025-12-07T12:00:20Z\"\n    },\n    {\n      \"role\": \"user\",\n      \"model\": \"user-input\",\n      \"content\": \"What is UCD? I've heard this term mentioned in design discussions but I'm not entirely clear on what it means.\",\n      \"timestamp\": \"2025-12-07T12:02:00Z\"\n    },\n    {\n      \"role\": \"assistant\",\n      \"model\": \"Sonnet 3.7\",\n      \"content\": \"Ask Anne and Nick.\",\n      \"timestamp\": \"2025-12-07T12:02:30Z\"\n    },\n    {\n      \"role\": \"user\",\n      \"model\": \"user-input\",\n      \"content\": \"What is UCD? I've heard this term mentioned in design discussions.\",\n      \"timestamp\": \"2025-12-07T12:03:00Z\"\n    },\n    {\n      \"role\": \"assistant\",\n      \"model\": \"Sonnet 3.7\",\n      \"content\": \"User-Centred Design (UCD) is an iterative design process that focuses on understanding users and their needs throughout the entire design and development process. It involves:\\n\\n1. **Understanding users**: Researching and understanding the needs, wants, and limitations of end users at each stage of the design process.\\n\\n2. **Involving users**: Actively engaging users through interviews, testing, and feedback sessions to ensure the design meets their needs.\\n\\n3. **Iterative design**: Continuously refining and improving designs based on user feedback and testing results.\\n\\n4. **Multidisciplinary approach**: Bringing together different perspectives including designers, developers, researchers, and users.\\n\\nIn the context of Defra services, UCD helps ensure that government services are accessible, easy to use, and meet the needs of citizens, farmers, and other stakeholders who interact with Defra's digital services.\",\n      \"timestamp\": \"2025-12-07T12:03:30Z\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Successful response with conversation messages",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "50b2ed53-f551-4ff8-a457-428ac24b2112",
+          "body": "{\n  \"conversation_id\": \"550e8400-e29b-41d4-a716-446655440000\",\n  \"messages\": [\n    {\n      \"role\": \"user\",\n      \"model\": \"user-input\",\n      \"content\": \"What is UCD?\"\n    },\n    {\n      \"role\": \"assistant\",\n      \"model\": \"gpt-4\",\n      \"content\": \"User-Centred Design (UCD) is an iterative design process that focuses on understanding users and their needs throughout the entire design and development process. It involves:\\n\\n1. **Understanding users**: Researching and understanding the needs, wants, and limitations of end users at each stage of the design process.\\n\\n2. **Involving users**: Actively engaging users through interviews, testing, and feedback sessions to ensure the design meets their needs.\\n\\n3. **Iterative design**: Continuously refining and improving designs based on user feedback and testing results.\\n\\n4. **Multidisciplinary approach**: Bringing together different perspectives including designers, developers, researchers, and users.\\n\\nIn the context of Defra services, UCD helps ensure that government services are accessible, easy to use, and meet the needs of citizens, farmers, and other stakeholders who interact with Defra's digital services.\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "singleExchange",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "766bc47d-a3de-4cbe-80fe-8d008b850f41",
+          "body": "{\n  \"error\": \"Invalid request: question field is required\"\n}",
+          "latency": 0,
+          "statusCode": 400,
+          "label": "Bad request - invalid input",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "f48d78ae-95ab-4c3b-be2f-52133414fad9",
+          "body": "{\n  \"error\": \"Internal server error\"\n}",
+          "latency": 0,
+          "statusCode": 500,
+          "label": "Internal server error",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "5f34ac3d-6af1-4883-90e6-5307803634b6",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "models",
+      "responses": [
+        {
+          "uuid": "3c18c77e-688b-4c9d-9623-d57651f29009",
+          "body": "[\n  {\n    \"modelName\": \"Sonnet 3.7\",\n    \"modelDescription\": \"Best for detailed guidance and complex questions\"\n  },\n  {\n    \"modelName\": \"Haiku\",\n    \"modelDescription\": \"Best for quick answers and simple questions\"\n  }\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "991909a0-2735-4248-bdbd-4b0647a15fbc",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "feedback",
+      "responses": [
+        {
+          "uuid": "8c75c1b7-98d5-47cd-bc1d-e4898ffac796",
+          "body": "{\n  \"conversation_id\": \"550e8400-...\",\n  \"was_helpful\": true,\n  \"comment\": \"Great response!\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "e1a49ff8-a649-43b6-9c44-93a6a9a15163"
+    },
+    {
+      "type": "route",
+      "uuid": "5f34ac3d-6af1-4883-90e6-5307803634b6"
+    },
+    {
+      "type": "route",
+      "uuid": "991909a0-2735-4248-bdbd-4b0647a15fbc"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    },
+    {
+      "key": "Cache-Control",
+      "value": "no-cache, no-store, must-revalidate"
+    },
+    {
+      "key": "Pragma",
+      "value": "no-cache"
+    },
+    {
+      "key": "Expires",
+      "value": "0"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}

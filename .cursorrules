@@ -1,0 +1,44 @@
+# Cursor Rules for AI-Defra-Search-Frontend
+
+## Change Tracking
+
+When making changes to this codebase, **always create or update a change log file** to help developers, designers, and delivery team members understand what has changed.
+
+**Full documentation:** See `.github/DESIGN-CHANGE-LOGGING.md`
+
+### Change Log Location
+
+All change logs are stored in: `.github/change-history/`
+
+**Filename format:** `CHANGES-[YYYY-MM-DD]-[short-description].md`
+
+### Quick Reference
+
+Each change log must include:
+1. **Summary for Jira ticket** - Copy/paste ready for BA/PM
+2. **Technical changes** - Files changed, added, to delete
+3. **Developer actions required** - Manual steps needed
+4. **Testing checklist** - QA verification points
+5. **Design decisions** - Rationale for choices made
+
+---
+
+## Code Standards Reminder
+
+When making frontend changes, always:
+
+1. **Follow GDS Design System** - Use GOV.UK components and patterns
+2. **Check accessibility** - WCAG 2.2 AA compliance
+3. **Reuse existing styles** - Check for `app-` classes before creating new ones
+4. **Update schema if form fields change** - Keep validation in sync with templates
+5. **Use GDS content design** - No "Please", active voice, concise
+
+---
+
+## File References
+
+- **Frontend rules:** `.github/FRONTEND-RULES.md`
+- **Design systems:** `.github/DESIGN-SYSTEMS.md`
+- **Change logging guide:** `.github/DESIGN-CHANGE-LOGGING.md`
+- **Change history:** `.github/change-history/`
+

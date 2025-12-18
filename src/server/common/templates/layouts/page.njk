@@ -1,0 +1,73 @@
+{% extends "govuk/template.njk" %}
+
+{# Import GOVUK components globally #}
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+
+{# Import custom components globally #}
+{% from "heading/macro.njk" import defraHeader %}
+
+{% set mainClasses = "app-main-wrapper" %}
+
+{% block head %}
+  <link href="{{ getAssetPath('stylesheets/application.scss') }}" rel="stylesheet">
+{% endblock %}
+
+{% block header %}
+  {{ defraHeader({
+      organisationLabel: {
+          text: "Defra",
+          href: "/"
+      },
+      serviceLabel: {
+          text: serviceName,
+          href: "/"
+      }
+  }) }}
+{% endblock %}
+
+{% block pageTitle %}
+  {{ pageTitle }}{% if pageTitle %} | {% endif %}{{ serviceName }}
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: {
+      text: "Alpha"
+    },
+    html: 'This is a new service. Help us improve it and <a class="govuk-link" href="/feedback" target="_blank" rel="noopener noreferrer">give your feedback (opens in new tab)</a>.'
+  }) }}
+  {% if breadcrumbs.length > 1 %}
+    {{ govukBreadcrumbs({
+      items: breadcrumbs
+    }) }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}{% endblock %}
+
+{% block footer %}
+  {{ govukFooter({
+    meta: {
+      items: [
+        {
+          href: "https://www.gov.uk/help/privacy-notice",
+          text: "Privacy"
+        },
+        {
+          href: "https://www.gov.uk/help/cookies",
+          text: "Cookies"
+        },
+        {
+          href: "https://www.gov.uk/help/accessibility-statement",
+          text: "Accessibility statement"
+        }
+      ]
+    }
+  }) }}
+{% endblock %}
+
+{% block bodyEnd %}
+  <script type="module" src="{{ getAssetPath('application.js') }}"></script>
+{% endblock %}
