@@ -68,7 +68,7 @@ describe('Start routes', () => {
       method: 'POST',
       url: '/start',
       payload: {
-        modelName: 'Sonnet 3.7',
+        modelId: 'sonnet-3.7',
         question: 'What is **UCD**?'
       }
     })
@@ -98,7 +98,7 @@ describe('Start routes', () => {
       method: 'POST',
       url: '/start',
       payload: {
-        modelName: 'Sonnet 3.7',
+        modelId: 'sonnet-3.7',
         question: 'What is UCD?'
       }
     })
@@ -114,6 +114,58 @@ describe('Start routes', () => {
     expect(bodyText).toContain('User-Centred Design (UCD) is a framework')
   })
 
+  test('POST /start with conversationId should continue existing conversation', async () => {
+    setupModelsApiMocks()
+    setupChatApiMocks('plaintext')
+
+    const questionResponse = await server.inject({
+      method: 'POST',
+      url: '/start/existing-conversation-123',
+      payload: {
+        modelId: 'sonnet-3.7',
+        question: 'Tell me more about that'
+      }
+    })
+
+    expect(questionResponse.statusCode).toBe(statusCodes.OK)
+
+    const { window } = new JSDOM(questionResponse.result)
+    const page = window.document
+
+    const bodyText = page.body.textContent
+    expect(bodyText).toContain('Tell me more about that')
+    expect(bodyText).toContain('User-Centred Design (UCD)')
+
+    // Check that the form action includes the conversationId
+    const form = page.querySelector('form[action*="mock-conversation-123"]')
+    expect(form).not.toBeNull()
+    expect(form.getAttribute('action')).toContain('/start/mock-conversation-123')
+  })
+
+  test('POST /start without conversationId should start new conversation', async () => {
+    setupModelsApiMocks()
+    setupChatApiMocks('plaintext')
+
+    const questionResponse = await server.inject({
+      method: 'POST',
+      url: '/start',
+      payload: {
+        modelId: 'sonnet-3.7',
+        question: 'What is UCD?'
+      }
+    })
+
+    expect(questionResponse.statusCode).toBe(statusCodes.OK)
+
+    const { window } = new JSDOM(questionResponse.result)
+    const page = window.document
+
+    // Check that the form action includes the conversationId from response
+    const form = page.querySelector('form[action*="mock-conversation-123"]')
+    expect(form).not.toBeNull()
+    expect(form.getAttribute('action')).toContain('/start/mock-conversation-123')
+  })
+
   test('POST /start with different models should send the selected model in the request', async () => {
     setupModelsApiMocks()
     setupChatApiMocks()
@@ -122,7 +174,7 @@ describe('Start routes', () => {
       method: 'POST',
       url: '/start',
       payload: {
-        modelName: 'Haiku',
+        modelId: 'haiku',
         question: 'What is user centred design?'
       }
     })
@@ -135,7 +187,7 @@ describe('Start routes', () => {
     // Verify the selected model is preserved in the form
     const bodyText = page.body.textContent
     expect(bodyText).toContain('AI assistant')
-    expect(bodyText).toContain('What is UCD?')
+    expect(bodyText).toContain('What is user centred design?')
     expect(bodyText).toContain('User-Centred Design (UCD)')
   })
 
@@ -164,7 +216,7 @@ describe('Start routes', () => {
       method: 'POST',
       url: '/start',
       payload: {
-        modelName: 'Sonnet 3.7',
+        modelId: 'sonnet-3.7',
         question: ''
       }
     })
@@ -183,9 +235,9 @@ describe('Start routes', () => {
 
     const response = await server.inject({
       method: 'POST',
-      url: '/start',
+      url: '/start/existing-conv-456',
       payload: {
-        modelName: 'Sonnet 3.7',
+        modelId: 'sonnet-3.7',
         question: 'f'.repeat(501)
       }
     })
@@ -197,17 +249,22 @@ describe('Start routes', () => {
 
     const errorSummary = page.querySelector('.govuk-error-summary')
     expect(errorSummary).not.toBeNull()
+
+    // Check that conversationId is preserved in the form action
+    const form = page.querySelector('form')
+    expect(form.getAttribute('action')).toContain('/start/existing-conv-456')
   })
 
   test('POST /start - when chat API returns 500 INTERNAL_SERVER_ERROR error then should display error message', async () => {
     // Setup 500 error mock
     setupChatApiErrorMock(statusCodes.INTERNAL_SERVER_ERROR)
+    setupModelsApiMocks()
 
     const response = await server.inject({
       method: 'POST',
-      url: '/start',
+      url: '/start/error-conversation-789',
       payload: {
-        modelName: 'Sonnet 3.7',
+        modelId: 'sonnet-3.7',
         question: 'What is user centred design?'
       }
     })
@@ -220,17 +277,22 @@ describe('Start routes', () => {
     const bodyText = page.body.textContent
     expect(bodyText).toContain('Sorry, there was a problem getting a response. Please try again.')
     expect(bodyText).toContain('What is user centred design?') // Question should be preserved
+
+    // Check that conversationId is preserved in the form action
+    const form = page.querySelector('form')
+    expect(form.getAttribute('action')).toContain('/start/error-conversation-789')
   })
 
   test('POST /start - when chat API returns 502 Bad Gateway then should display error message', async () => {
     // Setup 502 error mock
     setupChatApiErrorMock(statusCodes.BAD_GATEWAY)
+    setupModelsApiMocks()
 
     const response = await server.inject({
       method: 'POST',
       url: '/start',
       payload: {
-        modelName: 'Sonnet 3.7',
+        modelId: 'sonnet-3.7',
         question: 'What is user centred design?'
       }
     })
@@ -248,12 +310,13 @@ describe('Start routes', () => {
   test('POST /start - when chat API returns 503 Service Unavailable then should display error message', async () => {
     // Setup 503 error mock
     setupChatApiErrorMock(statusCodes.SERVICE_UNAVAILABLE)
+    setupModelsApiMocks()
 
     const response = await server.inject({
       method: 'POST',
       url: '/start',
       payload: {
-        modelName: 'Sonnet 3.7',
+        modelId: 'sonnet-3.7',
         question: 'What is user centred design?'
       }
     })
@@ -271,12 +334,13 @@ describe('Start routes', () => {
   test('POST /start - when chat API returns 504 Gateway Timeout then should display error message', async () => {
     // Setup 504 error mock
     setupChatApiErrorMock(statusCodes.GATEWAY_TIMEOUT)
+    setupModelsApiMocks()
 
     const response = await server.inject({
       method: 'POST',
       url: '/start',
       payload: {
-        modelName: 'Sonnet 3.7',
+        modelId: 'sonnet-3.7',
         question: 'What is user centred design?'
       }
     })
@@ -294,12 +358,13 @@ describe('Start routes', () => {
   test('POST /start - when chat API connection times out then should display error message', async () => {
     // Setup network timeout mock
     setupChatApiErrorMock(null, 'timeout')
+    setupModelsApiMocks()
 
     const response = await server.inject({
       method: 'POST',
       url: '/start',
       payload: {
-        modelName: 'Sonnet 3.7',
+        modelId: 'sonnet-3.7',
         question: 'What is user centred design?'
       }
     })
@@ -312,6 +377,81 @@ describe('Start routes', () => {
     const bodyText = page.body.textContent
     expect(bodyText).toContain('Sorry, there was a problem getting a response. Please try again.')
     expect(bodyText).toContain('What is user centred design?')
+  })
+
+  test('POST /start - when chat API returns 400 Bad Request (AWS Bedrock error) should display inline error in conversation', async () => {
+    // Setup 400 error mock (simulating AWS Bedrock content filter error)
+    setupChatApiErrorMock(statusCodes.BAD_REQUEST)
+    setupModelsApiMocks()
+
+    const response = await server.inject({
+      method: 'POST',
+      url: '/start',
+      payload: {
+        modelId: 'sonnet-3.7',
+        question: 'What is user centred design?'
+      }
+    })
+
+    // Should return 400 status code
+    expect(response.statusCode).toBe(statusCodes.BAD_REQUEST)
+
+    const { window } = new JSDOM(response.result)
+    const page = window.document
+
+    // Check that inline error message is displayed in conversation
+    const errorMessage = page.querySelector('.app-error-message')
+    expect(errorMessage).not.toBeNull()
+
+    // Check error message content
+    const bodyText = page.body.textContent
+    expect(bodyText).toContain('There is a problem')
+    expect(bodyText).toContain('We could not process your message')
+    expect(bodyText).toContain('Try making your message shorter')
+    expect(bodyText).toContain('BR400-') // Error code should be present
+
+    // Check that user's question is still visible in conversation
+    expect(bodyText).toContain('What is user centred design?')
+
+    // Check that the input field still contains the question for resubmission
+    const questionInput = page.querySelector('#question')
+    expect(questionInput).not.toBeNull()
+    expect(questionInput.value).toBe('What is user centred design?')
+
+    // Check that send button is still enabled (not disabled)
+    const sendButton = page.querySelector('button[type="submit"]')
+    expect(sendButton).not.toBeNull()
+    expect(sendButton.hasAttribute('disabled')).toBe(false)
+  })
+
+  test('POST /start - when chat API returns 400 with conversationId should preserve conversation context', async () => {
+    // Setup 400 error mock
+    setupChatApiErrorMock(statusCodes.BAD_REQUEST)
+    setupModelsApiMocks()
+
+    const response = await server.inject({
+      method: 'POST',
+      url: '/start/existing-conversation-400',
+      payload: {
+        modelId: 'sonnet-3.7',
+        question: 'This message triggers a content filter'
+      }
+    })
+
+    expect(response.statusCode).toBe(statusCodes.BAD_REQUEST)
+
+    const { window } = new JSDOM(response.result)
+    const page = window.document
+
+    // Check that conversationId is preserved in form action
+    const form = page.querySelector('form')
+    expect(form.getAttribute('action')).toContain('/start/existing-conversation-400')
+
+    // Check that the error message panel has ARIA attributes for accessibility
+    const errorPanel = page.querySelector('.app-error-message')
+    expect(errorPanel).not.toBeNull()
+    expect(errorPanel.getAttribute('role')).toBe('alert')
+    expect(errorPanel.getAttribute('aria-live')).toBe('polite')
   })
 
   test('GET /start - when models API returns 500 error should display error page', async () => {
@@ -361,7 +501,7 @@ describe('Start routes', () => {
       method: 'POST',
       url: '/start',
       payload: {
-        modelName: 'Sonnet 3.7',
+        modelId: 'sonnet-3.7',
         question: 'What is user centred design?'
       }
     })

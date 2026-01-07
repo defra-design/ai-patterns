@@ -18,7 +18,7 @@
           </div>
         </div>
         <p class="govuk-body-s govuk-!-text-align-right govuk-!-margin-top-0">
-          <strong>You</strong> {% if message.timestamp %}({{ message.timestamp | formatDate("yyyy-MM-dd HH:mm:ss") }}){% endif %}
+          <strong>You</strong>{% if message.timestamp %} at {{ message.timestamp | formatDate("h:mmaaa") }}{% endif %}
         </p>
       {% endif %}
 
@@ -28,9 +28,32 @@
         </div>
         <div class="govuk-!-display-flex govuk-!-justify-content-space-between govuk-!-margin-top-0">
           <p class="govuk-body-s govuk-!-margin-top-0 govuk-!-margin-bottom-0">
-            <strong>AI Assistant</strong> {% if message.model %}({{ message.model }}){% endif %} {% if message.timestamp %}({{ message.timestamp | formatDate("yyyy-MM-dd HH:mm:ss") }}){% endif %}
+            <strong>AI assistant</strong>{% if message.modelName %} ({{ message.modelName }}){% endif %}{% if message.timestamp %} at {{ message.timestamp | formatDate("h:mmaaa") }}{% endif %}
           </p>
         </div>
+      {% endif %}
+
+      {% if message.role === "error" %}
+        <div class="app-error-message" role="alert" aria-live="polite">
+          <div class="app-error-message__header">
+            <span class="app-error-message__icon" aria-hidden="true">⚠</span>
+            <span class="govuk-heading-s govuk-!-margin-bottom-0">There is a problem</span>
+          </div>
+          <div class="app-error-message__body">
+            <p class="govuk-body">We could not process your message.</p>
+            <p class="govuk-body">This is usually because the message is too long or contains content we cannot process.</p>
+            <p class="govuk-body govuk-!-font-weight-bold">What you can do:</p>
+            <ul class="govuk-list govuk-list--bullet">
+              <li>Try making your message shorter</li>
+              <li>Break your question into smaller parts</li>
+              <li>Check your message does not contain unusual characters</li>
+            </ul>
+            <p class="govuk-body-s govuk-!-margin-bottom-0">If this keeps happening, contact support with error code: <strong>{{ message.errorCode }}</strong></p>
+          </div>
+        </div>
+        <p class="govuk-body-s govuk-!-margin-top-1">
+          <strong>Error</strong>{% if message.timestamp %} at {{ message.timestamp | formatDate("h:mmaaa") }}{% endif %}
+        </p>
       {% endif %}
     {% endfor %}
   </div>

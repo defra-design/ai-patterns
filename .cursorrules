@@ -35,6 +35,22 @@ When making frontend changes, always:
 
 ---
 
+## NPM Security
+
+This repo has security measures in place to protect against npm supply-chain attacks.
+
+### Security controls (configured in `.npmrc`)
+- **`ignore-scripts=true`** - Prevents malicious install scripts from running
+- **`save-exact=true`** - Pins new dependencies to exact versions (no `^` or `~`)
+
+### When working with npm packages:
+1. **Always use exact versions** - No `^` or `~` in package.json versions
+2. **Don't rush to upgrade** - Wait for packages to be vetted before updating
+3. **Use `npm install --ignore-scripts`** if the `.npmrc` is missing for any reason
+4. **Check before adding dependencies** - Verify packages are legitimate and well-maintained
+
+---
+
 ## File References
 
 - **Frontend rules:** `.github/FRONTEND-RULES.md`

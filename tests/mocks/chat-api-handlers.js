@@ -8,7 +8,7 @@ const chatApiBaseUrl = 'http://host.docker.internal:3018'
 function setupChatApiMocks (responseType = 'plaintext') {
   const responses = {
     markdown: {
-      conversation_id: 'mock-conversation-123',
+      conversationId: 'mock-conversation-123',
       messages: [
         {
           role: 'user',
@@ -22,7 +22,7 @@ function setupChatApiMocks (responseType = 'plaintext') {
       ]
     },
     plaintext: {
-      conversation_id: 'mock-conversation-123',
+      conversationId: 'mock-conversation-123',
       messages: [
         {
           role: 'user',
@@ -40,16 +40,29 @@ function setupChatApiMocks (responseType = 'plaintext') {
   nock(chatApiBaseUrl)
     .persist()
     .post('/chat', (body) => {
-      return typeof body.question === 'string' && typeof body.modelName === 'string'
+      return typeof body.question === 'string' && typeof body.modelId === 'string'
     })
-    .reply(200, responses[responseType] || responses.plaintext)
+    .reply(200, (uri, requestBody) => {
+      const response = responses[responseType] || responses.plaintext
+      // Return a response with the actual question from the request
+      return {
+        conversationId: 'mock-conversation-123',
+        messages: [
+          {
+            role: 'user',
+            content: requestBody.question
+          },
+          ...response.messages.filter(m => m.role === 'assistant')
+        ]
+      }
+    })
 
   return nock
 }
 
 /**
  * Setup error mock for chat API
- * @param {number} statusCode - HTTP status code to return (500, 502, 503, 504)
+ * @param {number} statusCode - HTTP status code to return (400, 500, 502, 503, 504)
  * @param {string} errorType - Type of error ('timeout' for network timeout, or undefined for HTTP error)
  */
 function setupChatApiErrorMock (statusCode, errorType) {
@@ -58,17 +71,20 @@ function setupChatApiErrorMock (statusCode, errorType) {
   if (errorType === 'timeout') {
     nock(chatApiBaseUrl)
       .post('/chat', (body) => {
-        // Verify the request body contains both question and modelName
-        return typeof body.question === 'string' && typeof body.modelName === 'string'
+        return typeof body.question === 'string' && typeof body.modelId === 'string'
       })
       .replyWithError('ETIMEDOUT')
   } else {
+    // For 400 errors, return a more specific error message like AWS Bedrock would
+    const errorBody = statusCode === 400
+      ? { message: 'The input text contains content that has been blocked by our content filters' }
+      : { error: 'Error from chat API' }
+
     nock(chatApiBaseUrl)
       .post('/chat', (body) => {
-        // Verify the request body contains both question and modelName
-        return typeof body.question === 'string' && typeof body.modelName === 'string'
+        return typeof body.question === 'string' && typeof body.modelId === 'string'
       })
-      .reply(statusCode, { error: 'Error from chat API' })
+      .reply(statusCode, errorBody)
   }
 }
 

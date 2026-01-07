@@ -1,0 +1,4 @@
+audit=false
+git-tag-version=false
+save-exact=true
+ignore-scripts=true
