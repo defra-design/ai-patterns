@@ -59,28 +59,16 @@ $app-error-colour: #d4351c;
 
   p {
     margin-bottom: 0;
-    color: govuk-colour("dark-grey");
+    color: govuk-colour("black");
   }
 }
 
-// Error message styling for HTTP 400 errors from AWS Bedrock
+// Error message styling for conversation errors
 .app-error-message {
   border-left: 5px solid $app-error-colour;
   background-color: govuk-colour("light-grey");
   padding: govuk-spacing(3);
   @include govuk-responsive-margin(1, "bottom");
-
-  &__header {
-    display: flex;
-    align-items: center;
-    gap: govuk-spacing(2);
-    margin-bottom: govuk-spacing(2);
-  }
-
-  &__icon {
-    color: $app-error-colour;
-    font-size: 1.25rem;
-  }
 
   &__body {
     p {

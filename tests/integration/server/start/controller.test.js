@@ -403,12 +403,11 @@ describe('Start routes', () => {
     const errorMessage = page.querySelector('.app-error-message')
     expect(errorMessage).not.toBeNull()
 
-    // Check error message content
+    // Check error message content (fatal error - must start over)
     const bodyText = page.body.textContent
     expect(bodyText).toContain('There is a problem')
-    expect(bodyText).toContain('We could not process your message')
-    expect(bodyText).toContain('Try making your message shorter')
-    expect(bodyText).toContain('BR400-') // Error code should be present
+    expect(bodyText).toContain('Something went wrong and we cannot continue this conversation')
+    expect(bodyText).toContain('Start a new conversation')
 
     // Check that user's question is still visible in conversation
     expect(bodyText).toContain('What is user centred design?')

@@ -35,24 +35,55 @@
 
       {% if message.role === "error" %}
         <div class="app-error-message" role="alert" aria-live="polite">
-          <div class="app-error-message__header">
-            <span class="app-error-message__icon" aria-hidden="true">⚠</span>
-            <span class="govuk-heading-s govuk-!-margin-bottom-0">There is a problem</span>
-          </div>
+          <h3 class="govuk-heading-s govuk-!-margin-bottom-2">There is a problem</h3>
           <div class="app-error-message__body">
-            <p class="govuk-body">We could not process your message.</p>
-            <p class="govuk-body">This is usually because the message is too long or contains content we cannot process.</p>
-            <p class="govuk-body govuk-!-font-weight-bold">What you can do:</p>
-            <ul class="govuk-list govuk-list--bullet">
-              <li>Try making your message shorter</li>
-              <li>Break your question into smaller parts</li>
-              <li>Check your message does not contain unusual characters</li>
-            </ul>
-            <p class="govuk-body-s govuk-!-margin-bottom-0">If this keeps happening, contact support with error code: <strong>{{ message.errorCode }}</strong></p>
+            {% if message.errorType === "timeout" %}
+              {# Scenario 1: Temporary error - user can retry #}
+              <p class="govuk-body">The response took too long and timed out.</p>
+              <h4 class="govuk-heading-s govuk-!-margin-bottom-2">What you can do</h4>
+              <ul class="govuk-list govuk-list--bullet">
+                <li>Wait a moment and try sending your message again</li>
+                <li>Try making your message shorter</li>
+              </ul>
+              <p class="govuk-body">If this keeps happening, you may need to <a href="/start/clear" class="govuk-link">start a new conversation</a>. You will not be able to recover this conversation, so copy any information you want to keep before starting again.</p>
+            {% elif message.errorType === "access-denied" %}
+              {# Scenario 3a: Access denied (403) - temporary service issue #}
+              <p class="govuk-body">The AI assistant is not available at the moment. This is not a problem with your message.</p>
+              <p class="govuk-body">This is usually a temporary issue with the service. Sending your message again will not fix the problem.</p>
+              <h4 class="govuk-heading-s govuk-!-margin-bottom-2">What you can do</h4>
+              <ul class="govuk-list govuk-list--bullet">
+                <li>Try again later</li>
+                <li>If you need to use this service urgently, contact your organisation's IT support</li>
+              </ul>
+              <p class="govuk-body">You may need to <a href="/start/clear" class="govuk-link">start a new conversation</a> when the service is available again. Copy any information you want to keep before leaving this page.</p>
+            {% elif message.errorType === "no-permission" %}
+              {# Scenario 3b: Access denied (403) - user permissions issue #}
+              <p class="govuk-body">You do not have permission to use this service.</p>
+              <p class="govuk-body">This could be because:</p>
+              <ul class="govuk-list govuk-list--bullet">
+                <li>your account has not been set up to use this service</li>
+                <li>your department does not have access to this service</li>
+                <li>you need to be connected to your organisation's network or VPN</li>
+              </ul>
+              <h4 class="govuk-heading-s govuk-!-margin-bottom-2">What you can do</h4>
+              <ul class="govuk-list govuk-list--bullet">
+                <li>Check you are connected to your organisation's network or VPN</li>
+                <li>Ask your line manager to request access for you</li>
+                <li>Contact your IT service desk if you think you should have access</li>
+              </ul>
+            {% else %}
+              {# Scenario 2: Fatal error (400) - user must start over #}
+              <p class="govuk-body">Something went wrong and we cannot continue this conversation.</p>
+              <p class="govuk-body">You'll need to start a new conversation. You will not be able to recover this conversation, so copy any information you want to keep before starting again.</p>
+              <h4 class="govuk-heading-s govuk-!-margin-bottom-2">What you can do</h4>
+              <ul class="govuk-list govuk-list--bullet">
+                <li><a href="/start/clear" class="govuk-link">Start a new conversation</a></li>
+              </ul>
+            {% endif %}
           </div>
         </div>
         <p class="govuk-body-s govuk-!-margin-top-1">
-          <strong>Error</strong>{% if message.timestamp %} at {{ message.timestamp | formatDate("h:mmaaa") }}{% endif %}
+          <strong>System message</strong>{% if message.timestamp %} at {{ message.timestamp | formatDate("h:mmaaa") }}{% endif %}
         </p>
       {% endif %}
     {% endfor %}
