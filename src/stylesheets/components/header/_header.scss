@@ -1,0 +1,25 @@
+@include govuk-exports("govuk-frontend/components/header") {
+    .govuk-header__logo {
+        min-width: 25%;
+        max-width: 25%;
+        margin: 0;
+        font-size: 1.1875rem !important;
+        line-height: 1.3157894737;
+    }
+
+    .govuk-header__link {
+        background: url('/public/images/crest-white.png') no-repeat 8px 0px;
+        background-size: auto 32px;
+        border-left: 4px solid #fff;
+        padding-top: 35px;
+        padding-left: 8px;
+        padding-bottom: 3px;
+        display: block;
+        text-decoration: none;
+        margin: 0;
+
+        &:focus {
+            @include govuk-focused-text;
+        }
+    }
+}

@@ -1,0 +1,42 @@
+---
+layout: ../../layouts/Layout.astro
+title: Blog
+activeNav: blog
+---
+
+import { getCollection } from 'astro:content'
+
+import GridRow from '../../components/grid/GridRow.astro'
+import GridColumn from '../../components/grid/GridColumn.astro'
+import { getBlogPosts } from '../../utils/patterns.js'
+
+export const sortedPosts = getBlogPosts(import.meta.glob('./*.md', { eager: true }))
+
+<GridRow>
+    <GridColumn width="two-thirds">
+        <a href="/" class="govuk-back-link">Back</a>
+        
+        # AI Patterns Blog
+        > This blog shares our experiences implementing AI solutions, lessons learned, and guidance for teams working with artificial intelligence in government services.
+
+        {sortedPosts.map(post => (
+            <article class="govuk-!-margin-bottom-6">
+                <h3 class="govuk-heading-m">
+                    {post.frontmatter.date && (
+                        <time datetime={post.frontmatter.date} class="govuk-tag govuk-!-margin-right-2">
+                            {new Date(post.frontmatter.date).toLocaleDateString('en-GB', { 
+                                day: 'numeric', 
+                                month: 'long', 
+                                year: 'numeric' 
+                            })}
+                        </time>
+                    )}
+                    <a href={post.url} class="govuk-link">{post.frontmatter.title}</a>
+                </h3>
+                {post.frontmatter.description && (
+                    <p class="govuk-body">{post.frontmatter.description}</p>
+                )}
+            </article>
+        ))}
+    </GridColumn>
+</GridRow>

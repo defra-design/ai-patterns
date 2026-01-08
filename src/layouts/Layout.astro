@@ -1,0 +1,81 @@
+---
+import "../stylesheets/application.scss";
+
+const { frontmatter } = Astro.props;
+
+const title = frontmatter.title ? 
+  `${frontmatter.title} | Defra AI Patterns` : 
+  'Defra AI Patterns';
+
+const activeNav = frontmatter.activeNav;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body class="govuk-template__body govuk-template--rebranded">
+		<script is:inline>
+    		document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
+  		</script>
+		<header class="govuk-header" data-module="govuk-header">
+			<div class="govuk-header__container govuk-width-container">
+				<div class="govuk-header__logo">
+					<a href="/" class="govuk-header__link">
+						<span class="govuk-header__logo-container">Department<br>for Environment,<br>Food &amp; Rural Affairs</span>
+					</a>
+				</div>
+			</div>
+		</header>
+		<section aria-label="Service information" class="govuk-service-navigation" data-module="govuk-service-navigation">
+			<div class="govuk-width-container">
+				<div class="govuk-service-navigation__container">
+				<span class="govuk-service-navigation__service-name">
+					<a href="/" class="govuk-service-navigation__link">
+						AI Patterns
+					</a>
+				</span>
+				<nav aria-label="Service navigation" class="govuk-service-navigation__wrapper">
+					<ul class="govuk-service-navigation__list">
+						{[
+							{ key: 'use-cases', label: 'Use Cases', href: '/use-cases' },
+							{ key: 'technical', label: 'Technical', href: '/technical' },
+							{ key: 'blog', label: 'Blog', href: '/blog' }
+						].map(({ key, label, href }) => (
+							<li class={`govuk-service-navigation__item ${activeNav === key ? 'govuk-service-navigation__item--active' : ''}`}>
+								<a class="govuk-service-navigation__link" href={href} aria-current={activeNav === key}>
+									{activeNav === key
+										? <strong class="govuk-service-navigation__active-fallback">{label}</strong>
+										: label
+									}
+								</a>
+							</li>
+						))}
+					</ul>
+				</nav>
+				</div>
+			</div>
+		</section>
+		<main class="govuk-main-wrapper" id="main-content">
+			<div class="govuk-width-container">
+				<slot />
+			</div>
+		</main>
+		<footer class="govuk-footer">
+			<div class="govuk-width-container">
+			<div class="govuk-footer__meta">
+				<div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+					<!-- Add GitHub Repo Link -->
+					<a href="https://github.com/DEFRA/defra-ai-patterns" class="govuk-footer__link">GitHub</a>
+				</div>
+			</div>
+			</div>
+		</footer>
+
+		<script src="../javascript/application.js"></script>
+	</body>
+</html>

@@ -2,17 +2,17 @@ services:
   redis:
     image: redis:7.2.3-alpine3.18
     ports:
-      - '6379:6379'
+      - '6380:6379'
     restart: always
     networks:
-      - cdp-tenant
+      - cdp-tenant-patterns
 
   ai-defra-search-frontend:
     build:
       target: development
     ports:
-      - '3000:3000'
-      - '9229:9229'
+      - '3001:3000'
+      - '9230:9229'
     links:
       - 'redis:redis'
     depends_on:
@@ -32,8 +32,8 @@ services:
       REDIS_HOST: redis
       USE_SINGLE_INSTANCE_CACHE: true
     networks:
-      - cdp-tenant
+      - cdp-tenant-patterns
 
 networks:
-  cdp-tenant:
+  cdp-tenant-patterns:
     driver: bridge

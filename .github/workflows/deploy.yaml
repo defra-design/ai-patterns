@@ -1,0 +1,67 @@
+name: Page Deploy
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build-pages:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+
+    - name: Get package.json version
+      id: get_version
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "VERSION=$(jq -r '.version' package.json)" >> $GITHUB_ENV
+        main_version=$(git describe origin/main --tags)
+        pr_version=$(jq -r '.version' package.json)
+        if [ "$pr_version" \> "$main_version" ]; then
+          exit 0
+        fi
+        echo "Package version ($pr_version) is has not been incremented over main branch ($main_version)"
+        exit 1
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: '24.x'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build documentation site
+      run: npm run build
+
+    - name: Upload artifacts
+      uses: actions/upload-pages-artifact@v4
+      if: 
+      with:
+        name: defra-ai-patterns-${{ env.VERSION }}
+        path: dist
+
+  # deploy:
+  #   needs: build-pages
+
+  #   if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+
+  #   permissions:
+  #     pages: write
+  #     id-token: write
+
+  #   environment:
+  #     name: github-pages
+  #     url: ${{ steps.deployment.output.page_url }}
+
+  #   runs-on: ubuntu-latest
+  #   steps:
+
+  #   - uses: actions/deploy-pages@v4
+  #     id: deployment

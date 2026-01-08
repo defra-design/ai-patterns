@@ -1,0 +1,12 @@
+---
+interface Props {
+  width?: 'full' | 'one-half' | 'one-third' | 'two-thirds' | 'one-quarter' | 'three-quarters';
+  class?: string;
+}
+
+const { width = 'full', class: className } = Astro.props;
+---
+
+<div class={`govuk-grid-column-${width}${className ? ` ${className}` : ''}`}>
+  <slot />
+</div>

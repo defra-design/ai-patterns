@@ -1,0 +1,72 @@
+---
+layout: ../../layouts/Layout.astro
+title: Technical Patterns
+activeNav: technical
+---
+
+import GridRow from '../../components/grid/GridRow.astro'
+import GridColumn from '../../components/grid/GridColumn.astro'
+import Card from '../../components/card/Card.astro'
+import CardContainer from '../../components/card/CardContainer.astro'
+import { getPatterns, getStatusTagClass } from '../../utils/patterns.js'
+
+export const allPatterns = getPatterns(import.meta.glob('./*.md', { eager: true }))
+
+<GridRow>
+    <GridColumn width="two-thirds">
+        <a href="/" class="govuk-back-link">Back</a>
+        
+        # Technical Patterns
+        
+        > Implementation patterns for specific technical challenges when building AI systems.
+        
+        Technical patterns provide guidance on solving common engineering problems such as:
+        - Architecting async AI interactions
+        - Implementing retrieval-augmented generation (RAG)
+        - Prompt engineering techniques
+        - Model integration approaches
+        - Error handling and fallback strategies
+        
+        These patterns can be combined and referenced when implementing [use case patterns](/use-cases/).
+    </GridColumn>
+</GridRow>
+
+<CardContainer>
+    {allPatterns.length > 0 ? (
+        allPatterns.map(pattern => (
+            <Card title={pattern.frontmatter.title} href={pattern.url}>
+                <div class="govuk-!-margin-bottom-2">
+                    <strong class={`govuk-tag ${getStatusTagClass(pattern.frontmatter.status)}`}>
+                        {pattern.frontmatter.status || 'Draft'}
+                    </strong>
+                </div>
+                {pattern.frontmatter.description && (
+                    <p class="govuk-body-s govuk-!-margin-bottom-2">
+                        {pattern.frontmatter.description}
+                    </p>
+                )}
+                {pattern.frontmatter.category && (
+                    <p class="govuk-body-xs govuk-!-margin-bottom-0">
+                        <strong>Category:</strong> {pattern.frontmatter.category}
+                    </p>
+                )}
+            </Card>
+        ))
+    ) : (
+        <GridColumn width="full">
+            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
+                <div class="govuk-notification-banner__header">
+                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
+                        Information
+                    </h2>
+                </div>
+                <div class="govuk-notification-banner__content">
+                    <h3 class="govuk-notification-banner__heading">
+                        No technical patterns available yet
+                    </h3>
+                    <p class="govuk-body">We're currently working on adding technical patterns to help you build better AI systems. Check back soon or <a class="govuk-notification-banner__link" href="/blog">read our blog</a> for updates.</p>
+                </div>
+            </div>
+        </GridColumn>
+    )}
+</CardContainer>

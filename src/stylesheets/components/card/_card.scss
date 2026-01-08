@@ -1,0 +1,36 @@
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+
+    .card {
+        color: #1d70b8;
+        display: flex;
+        flex-direction: column;
+        background-color: #ffffff;
+        border: 1px solid #dcdcdc;
+        flex: 1 1 0px;
+        min-width: 250px;
+        position: relative;
+
+        a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        a:visited {
+            color: #1d70b8;
+        }
+
+        .content {
+            padding: 20px;
+            display: flex;
+            flex-grow: 1;
+            flex-direction: column;
+        }
+    }
+}

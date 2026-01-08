@@ -1,14 +1,28 @@
-.DS_Store
-.npm/
-.vscode
-.idea
-.public
-node_modules
-npm-debug.log
-coverage
-.cache
-.envrc
-tsconfig.tsbuildinfo
-.env
+# build output
+dist/
 
-compromised-packages.txt
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/
+
+.cache/
+
+.vscode/

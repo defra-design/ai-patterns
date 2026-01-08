@@ -1,0 +1,28 @@
+---
+layout: ../layouts/Layout.astro
+title: Home
+---
+
+import Card from '../components/card/Card.astro';
+import CardContainer from '../components/card/CardContainer.astro';
+import GridRow from '../components/grid/GridRow.astro';
+import GridColumn from '../components/grid/GridColumn.astro';
+
+<GridRow>
+    <GridColumn width="three-quarters">
+        # Defra AI Patterns
+        > AI patterns and guidance for delivering services utilising Artificial Intelligence in the Department for Environment, Food & Rural Affairs (Defra).
+    </GridColumn>
+</GridRow>
+
+<CardContainer>
+  <Card title="Use Case Patterns" href="/use-cases/">
+    End-to-end patterns for building AI-powered services
+  </Card>
+  <Card title="Technical Patterns" href="/technical/">
+    Tehnical implementation patterns and best practices
+  </Card>
+  <Card title="Blog" href="/blog/">
+    Read our latest articles and updates
+  </Card>
+</CardContainer>
