@@ -9,14 +9,11 @@
 ## Summary for Jira Ticket
 
 Refined the error message design in the conversation component based on design review:
-- Removed warning icon from error messages for cleaner visual presentation
-- Changed "There is a problem" to semantic h3 for improved screen reader navigation
-- Removed "contact support with error code" text (out of scope for first iteration)
-- Changed sender label from "Error" to "System message" for clearer attribution
+- Added semantic heading structure (h3 for "There is a problem", h4 for subsections) for screen reader navigation
+- Changed sender label to "System message" for clearer attribution
 - Added three error scenarios: timeout (retry possible), fatal error (must start over), and access denied (service unavailable)
-- Added copy-paste warning for all error types to help users preserve their work
-- Changed "What you can do" from bold text to h4 heading for better hierarchy
-- Enhanced test mode to demonstrate recovery/retry behaviour for all three scenarios
+- Added copy-paste warnings to help users preserve their work before starting a new conversation
+- Fixed assistant response text colour from dark-grey to black for better readability
 
 ---
 
@@ -26,12 +23,10 @@ Refined the error message design in the conversation component based on design r
 
 | File | Change |
 |------|--------|
-| `src/server/common/components/conversation/template.njk` | Redesigned error message block with h3, removed icon, updated content for two scenarios |
-| `src/client/stylesheets/components/conversation/_conversation.scss` | Removed icon styling (`.app-error-message__header` and `.app-error-message__icon`) |
-
-### Files to Delete
-
-None.
+| `src/server/common/components/conversation/template.njk` | Redesigned error message block with semantic headings and three error scenarios |
+| `src/client/stylesheets/components/conversation/_conversation.scss` | Updated styling, fixed assistant text colour |
+| `src/server/start/controller.js` | Added errorType support and test mode commands |
+| `tests/integration/server/start/controller.test.js` | Updated tests for new error content |
 
 ---
 
@@ -62,16 +57,14 @@ To test the error designs locally, type these exact phrases in the chat input:
 
 ## Testing Checklist
 
-- [ ] Verify error message displays without warning icon
 - [ ] Verify "There is a problem" is announced as heading by screen readers
 - [ ] Verify "System message at [time]" appears as sender label
 - [ ] Verify timeout error shows retry content with "Wait a moment and try sending your message again"
-- [ ] Verify timeout error shows "if this keeps happening" warning with copy-paste advice
+- [ ] Verify timeout error shows "If this keeps happening" section with copy-paste advice
 - [ ] Verify fatal error shows "Start a new conversation" link with copy-paste advice
-- [ ] Verify 403 error shows "AI service is not available" message
+- [ ] Verify 403 error shows "AI assistant is not available" message
 - [ ] Verify 403 error explains retrying won't help
 - [ ] Verify "Start a new conversation" links work correctly
-- [ ] Verify no "contact support with error code" text appears
 - [ ] Test with screen reader to confirm heading navigation works
 - [ ] Run integration tests: `npm test`
 
@@ -81,15 +74,12 @@ To test the error designs locally, type these exact phrases in the chat input:
 
 | Decision | Rationale |
 |----------|-----------|
-| Removed warning icon | Cleaner visual design; the red border and heading already indicate an error |
-| Semantic h3 heading | WCAG 2.2 1.3.1 and 2.4.6 - helps screen reader users navigate by headings within conversation |
-| "System message" as sender | Distinguishes system messages from AI model responses; clearer attribution than "Error" |
+| Semantic h3/h4 headings | WCAG 2.2 1.3.1 and 2.4.6 - helps screen reader users navigate by headings within conversation |
+| "System message" as sender | Distinguishes system messages from AI model responses; clearer attribution |
 | Three error scenarios | Different errors need different guidance: retry (timeout), not your fault (403), must restart (400) |
-| Removed error code | Out of scope for MVP; simplifies the user interface |
 | Copy-paste warning | Critical information for all error types - helps users preserve their work |
-| "What you can do" as h4 | Proper heading hierarchy (h1→h2→h3→h4) and improves navigation for screen reader users |
-| 403 content avoids blame | Makes clear it's not the user's fault; avoids technical jargon like "IAM permissions" |
-| Assistant text colour | Fixed from dark-grey to black for better readability |
+| 403 content avoids blame | Makes clear it's not the user's fault; avoids technical jargon |
+| Assistant text colour | Changed from dark-grey to black for better readability |
 
 ---
 
@@ -135,14 +125,15 @@ To test the error designs locally, type these exact phrases in the chat input:
 
 ## Accessibility Considerations
 
-- Error panel retains `role="alert"` and `aria-live="polite"` for immediate screen reader announcement
-- "There is a problem" is now semantic `<h3>` for heading navigation (fits hierarchy below page h1/h2)
+- Error panel uses `role="alert"` and `aria-live="polite"` for immediate screen reader announcement
+- "There is a problem" is semantic `<h3>` for heading navigation (fits hierarchy below page h1/h2)
+- "What you can do" and "If this keeps happening" are `<h4>` for proper hierarchy
 - Link text "Start a new conversation" is descriptive and actionable
-- Colour contrast continues to meet WCAG 2.2 AA requirements
+- Colour contrast meets WCAG 2.2 AA requirements
 
 ---
 
-## UI Design Reference (Updated)
+## UI Design Reference
 
 ### Timeout Error (can retry)
 ```
@@ -191,7 +182,7 @@ System message at 3:18pm
 │ There is a problem                              │
 │                                                 │
 │ The AI assistant is not available at the        │
-│ moment. This is not a problem with your message.        │
+│ moment. This is not a problem with your message.│
 │                                                 │
 │ This is usually a temporary issue with the      │
 │ service. Sending your message again will not    │
@@ -209,5 +200,3 @@ System message at 3:18pm
 └─────────────────────────────────────────────────┘
 System message at 3:18pm
 ```
-
-
