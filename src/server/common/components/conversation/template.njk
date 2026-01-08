@@ -45,7 +45,8 @@
                 <li>Wait a moment and try sending your message again</li>
                 <li>Try making your message shorter</li>
               </ul>
-              <p class="govuk-body">If this keeps happening, you may need to <a href="/start/clear" class="govuk-link">start a new conversation</a>. You will not be able to recover this conversation, so copy any information you want to keep before starting again.</p>
+              <h4 class="govuk-heading-s govuk-!-margin-bottom-2">If this keeps happening</h4>
+              <p class="govuk-body">You may need to <a href="/start/clear" class="govuk-link">start a new conversation</a>. You will not be able to recover this conversation, so copy any information you want to keep before starting again.</p>
             {% elif message.errorType === "access-denied" %}
               {# Scenario 3a: Access denied (403) - temporary service issue #}
               <p class="govuk-body">The AI assistant is not available at the moment. This is not a problem with your message.</p>

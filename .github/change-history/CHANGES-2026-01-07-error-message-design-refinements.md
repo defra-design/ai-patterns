@@ -104,7 +104,9 @@ To test the error designs locally, type these exact phrases in the chat input:
 > - Wait a moment and try sending your message again
 > - Try making your message shorter
 >
-> If this keeps happening, you may need to start a new conversation. You will not be able to recover this conversation, so copy any information you want to keep before starting again.
+> **If this keeps happening**
+>
+> You may need to start a new conversation. You will not be able to recover this conversation, so copy any information you want to keep before starting again.
 
 ### Scenario 2: Fatal error (400 - must start over)
 > **There is a problem**
@@ -154,11 +156,12 @@ To test the error designs locally, type these exact phrases in the chat input:
 │   again                                         │
 │ • Try making your message shorter               │
 │                                                 │
-│ If this keeps happening, you may need to start  │
-│ a new conversation. You will not be able to     │
-│ recover this conversation, so copy any          │
-│ information you want to keep before starting    │
-│ again.                                          │
+│ If this keeps happening                         │
+│                                                 │
+│ You may need to start a new conversation. You   │
+│ will not be able to recover this conversation,  │
+│ so copy any information you want to keep before │
+│ starting again.                                 │
 └─────────────────────────────────────────────────┘
 System message at 3:18pm
 ```
