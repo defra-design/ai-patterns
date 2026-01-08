@@ -14,7 +14,7 @@ Refined the error message design in the conversation component based on design r
 - Removed "contact support with error code" text (out of scope for first iteration)
 - Changed sender label from "Error" to "System message" for clearer attribution
 - Added three error scenarios: timeout (retry possible), fatal error (must start over), and access denied (service unavailable)
-- Added copy-paste warning for fatal and timeout errors to help users preserve their work
+- Added copy-paste warning for all error types to help users preserve their work
 - Changed "What you can do" from bold text to h4 heading for better hierarchy
 - Enhanced test mode to demonstrate recovery/retry behaviour for all three scenarios
 
@@ -40,14 +40,13 @@ None.
 When creating error messages in the controller, you can now specify `errorType`:
 - `errorType: "timeout"` — Shows retry-friendly content with "if this keeps happening" warning
 - `errorType: "access-denied"` — Shows 403 service unavailable content (temporary issue, not user's fault)
-- `errorType: "no-permission"` — Shows 403 user permissions content (user needs to request access)
 - No `errorType` (default) — Shows fatal error content with link to start new conversation
 
 Example:
 ```javascript
 messages.push({
   role: 'error',
-  errorType: 'timeout', // or 'access-denied', 'no-permission', or omit for fatal error
+  errorType: 'timeout', // or 'access-denied', or omit for fatal error
   timestamp: new Date()
 })
 ```
@@ -57,8 +56,7 @@ messages.push({
 To test the error designs locally, type these exact phrases in the chat input:
 - **`test-400-error`** — Triggers fatal error scenario (400). Send another message to see that the error persists (conversation broken)
 - **`test-timeout-error`** — Triggers timeout error scenario. Send another message to see successful recovery
-- **`test-403-error`** — Triggers access denied scenario (403 Option A - temporary service issue). Send another message to see that the service remains unavailable
-- **`test-no-permission`** — Triggers no permission scenario (403 Option B - user permissions). Send another message to see that permission is still required
+- **`test-403-error`** — Triggers access denied scenario (403 - temporary service issue). Send another message to see that the service remains unavailable
 
 ---
 
@@ -91,6 +89,7 @@ To test the error designs locally, type these exact phrases in the chat input:
 | Copy-paste warning | Critical information for all error types - helps users preserve their work |
 | "What you can do" as h4 | Proper heading hierarchy (h1→h2→h3→h4) and improves navigation for screen reader users |
 | 403 content avoids blame | Makes clear it's not the user's fault; avoids technical jargon like "IAM permissions" |
+| Assistant text colour | Fixed from dark-grey to black for better readability |
 
 ---
 
@@ -117,7 +116,7 @@ To test the error designs locally, type these exact phrases in the chat input:
 > **What you can do**
 > - Start a new conversation
 
-### Scenario 3a: Access denied (403 Option A - temporary service issue)
+### Scenario 3: Access denied (403 - temporary service issue)
 > **There is a problem**
 >
 > The AI assistant is not available at the moment. This is not a problem with your message.
@@ -129,21 +128,6 @@ To test the error designs locally, type these exact phrases in the chat input:
 > - If you need to use this service urgently, contact your organisation's IT support
 >
 > You may need to start a new conversation when the service is available again. Copy any information you want to keep before leaving this page.
-
-### Scenario 3b: No permission (403 Option B - user permissions issue)
-> **There is a problem**
->
-> You do not have permission to use this service.
->
-> This could be because:
-> - your account has not been set up to use this service
-> - your department does not have access to this service
-> - you need to be connected to your organisation's network or VPN
->
-> **What you can do**
-> - Check you are connected to your organisation's network or VPN
-> - Ask your line manager to request access for you
-> - Contact your IT service desk if you think you should have access
 
 ---
 
@@ -198,7 +182,7 @@ System message at 3:18pm
 System message at 3:18pm
 ```
 
-### Access Denied Error (403 Option A - temporary service issue)
+### Access Denied Error (403 - temporary service issue)
 ```
 ┌─────────────────────────────────────────────────┐
 │ There is a problem                              │
@@ -223,29 +207,4 @@ System message at 3:18pm
 System message at 3:18pm
 ```
 
-### No Permission Error (403 Option B - user permissions issue)
-```
-┌─────────────────────────────────────────────────┐
-│ There is a problem                              │
-│                                                 │
-│ You do not have permission to use this service. │
-│                                                 │
-│ This could be because:                          │
-│ • your account has not been set up to use this  │
-│   service                                       │
-│ • your department does not have access to this  │
-│   service                                       │
-│ • you need to be connected to your              │
-│   organisation's network or VPN                 │
-│                                                 │
-│ What you can do                                 │
-│ • Check you are connected to your               │
-│   organisation's network or VPN                 │
-│ • Ask your line manager to request access for   │
-│   you                                           │
-│ • Contact your IT service desk if you think you │
-│   should have access                            │
-└─────────────────────────────────────────────────┘
-System message at 3:18pm
-```
 

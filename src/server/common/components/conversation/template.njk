@@ -56,21 +56,6 @@
                 <li>If you need to use this service urgently, contact your organisation's IT support</li>
               </ul>
               <p class="govuk-body">You may need to <a href="/start/clear" class="govuk-link">start a new conversation</a> when the service is available again. Copy any information you want to keep before leaving this page.</p>
-            {% elif message.errorType === "no-permission" %}
-              {# Scenario 3b: Access denied (403) - user permissions issue #}
-              <p class="govuk-body">You do not have permission to use this service.</p>
-              <p class="govuk-body">This could be because:</p>
-              <ul class="govuk-list govuk-list--bullet">
-                <li>your account has not been set up to use this service</li>
-                <li>your department does not have access to this service</li>
-                <li>you need to be connected to your organisation's network or VPN</li>
-              </ul>
-              <h4 class="govuk-heading-s govuk-!-margin-bottom-2">What you can do</h4>
-              <ul class="govuk-list govuk-list--bullet">
-                <li>Check you are connected to your organisation's network or VPN</li>
-                <li>Ask your line manager to request access for you</li>
-                <li>Contact your IT service desk if you think you should have access</li>
-              </ul>
             {% else %}
               {# Scenario 2: Fatal error (400) - user must start over #}
               <p class="govuk-body">Something went wrong and we cannot continue this conversation.</p>

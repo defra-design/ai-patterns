@@ -231,58 +231,6 @@ export const startPostController = {
       }).code(statusCodes.FORBIDDEN)
     }
 
-    // Initial 403 no permission error trigger (Option B - user permissions issue)
-    if (question.toLowerCase().trim() === 'test-no-permission') {
-      logger.info('TEST MODE: Simulating 403 no permission error for design review')
-      models = await getModels()
-      const messagesWithError = [
-        {
-          role: 'user',
-          content: `<p>${question}</p>`,
-          timestamp: new Date().toISOString()
-        },
-        createErrorMessage(new Date(), 'no-permission') // 403 error - user doesn't have permission
-      ]
-
-      return h.view(END_POINT_PATH, {
-        messages: messagesWithError,
-        question,
-        conversationId: 'test-no-permission-mode', // Special ID to track test mode
-        modelId,
-        models,
-        hasBedrockError: true
-      }).code(statusCodes.FORBIDDEN)
-    }
-
-    // Subsequent messages after no permission error - show error persists
-    if (conversationId === 'test-no-permission-mode') {
-      logger.info('TEST MODE: Showing that 403 no permission error persists on retry')
-      models = await getModels()
-      const messagesWithError = [
-        {
-          role: 'user',
-          content: '<p>test-no-permission</p>',
-          timestamp: new Date(Date.now() - 60000).toISOString() // 1 minute ago
-        },
-        createErrorMessage(new Date(Date.now() - 60000), 'no-permission'), // First error
-        {
-          role: 'user',
-          content: `<p>${question}</p>`,
-          timestamp: new Date().toISOString()
-        },
-        createErrorMessage(new Date(), 'no-permission') // Second error - still no permission
-      ]
-
-      return h.view(END_POINT_PATH, {
-        messages: messagesWithError,
-        question,
-        conversationId,
-        modelId,
-        models,
-        hasBedrockError: true
-      }).code(statusCodes.FORBIDDEN)
-    }
-
     try {
       models = await getModels()
       const response = await sendQuestion(question, modelId, conversationId)
