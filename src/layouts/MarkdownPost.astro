@@ -3,24 +3,36 @@ import Layout from './Layout.astro';
 
 const { frontmatter, headings } = Astro.props;
 
-// Determine back link based on activeNav
-const backLinks = {
-	'blog': '/blog/',
-	'technical': '/technical/',
-	'use-cases': '/use-cases/'
+// Determine breadcrumb based on activeNav
+const breadcrumbLinks = {
+	'blog': { href: '/blog/', text: 'Blog' },
+	'technical': { href: '/technical/', text: 'Technical patterns' },
+	'use-cases': { href: '/use-cases/', text: 'Use case patterns' }
 };
-const backLink = backLinks[frontmatter.activeNav] || '/';
+const breadcrumb = breadcrumbLinks[frontmatter.activeNav];
 ---
 
 <Layout frontmatter={frontmatter}>
 	<div class="govuk-grid-row">
 		<div class="govuk-grid-column-two-thirds">
-			<a href={backLink} class="govuk-back-link">Back</a>
+			{breadcrumb && (
+				<nav class="govuk-breadcrumbs govuk-!-margin-bottom-6" aria-label="Breadcrumb">
+					<ol class="govuk-breadcrumbs__list">
+						<li class="govuk-breadcrumbs__list-item">
+							<a class="govuk-breadcrumbs__link" href="/">Home</a>
+						</li>
+						<li class="govuk-breadcrumbs__list-item">
+							<a class="govuk-breadcrumbs__link" href={breadcrumb.href}>{breadcrumb.text}</a>
+						</li>
+					</ol>
+				</nav>
+			)}
 			<article class="blog-post">
+				<h1 class="govuk-heading-xl">{frontmatter.title}</h1>
 				{frontmatter.date && (
-					<p class="govuk-!-margin-bottom-6">
-						<time datetime={frontmatter.date} class="govuk-tag">
-							{new Date(frontmatter.date).toLocaleDateString('en-GB', { 
+					<p class="govuk-body-s govuk-!-margin-bottom-6" style="color: #505a5f;">
+						<time datetime={frontmatter.date}>
+							Posted on {new Date(frontmatter.date).toLocaleDateString('en-GB', { 
 								day: 'numeric', 
 								month: 'long', 
 								year: 'numeric' 
@@ -28,60 +40,34 @@ const backLink = backLinks[frontmatter.activeNav] || '/';
 						</time>
 					</p>
 				)}
-				{(frontmatter.status || frontmatter.category || frontmatter.description) && (
-					<blockquote class="govuk-!-margin-bottom-6">
-						<dl class="govuk-summary-list govuk-summary-list--no-border">
-							{frontmatter.status && (
-								<div class="govuk-summary-list__row">
-									<dt class="govuk-summary-list__key" style="width: 30%;">Status</dt>
-									<dd class="govuk-summary-list__value">
-										<strong class={`govuk-tag ${
-											frontmatter.status.toLowerCase() === 'stable' ? 'govuk-tag--green' :
-											frontmatter.status.toLowerCase() === 'experimental' ? 'govuk-tag--yellow' :
-											frontmatter.status.toLowerCase() === 'deprecated' ? 'govuk-tag--red' :
-											'govuk-tag--grey'
-										}`}>
-											{frontmatter.status}
-										</strong>
-									</dd>
-								</div>
-							)}
-							{frontmatter.category && (
-								<div class="govuk-summary-list__row">
-									<dt class="govuk-summary-list__key" style="width: 30%;">Category</dt>
-									<dd class="govuk-summary-list__value">{frontmatter.category}</dd>
-								</div>
-							)}
-							{frontmatter.description && (
-								<div class="govuk-summary-list__row">
-									<dt class="govuk-summary-list__key" style="width: 30%;">Description</dt>
-									<dd class="govuk-summary-list__value">{frontmatter.description}</dd>
-								</div>
-							)}
-						</dl>
-					</blockquote>
-				)}
 				<slot />
+				{(frontmatter.status || frontmatter.category || frontmatter.description) && (
+					<div class="pattern-metadata govuk-!-margin-top-6 govuk-!-padding-4" style="background-color: #f3f2f1; border-left: 4px solid #1d70b8;">
+						{frontmatter.status && (
+							<p class="govuk-body govuk-!-margin-bottom-2">
+								<strong>Status:</strong> <strong class={`govuk-tag ${
+									frontmatter.status.toLowerCase() === 'stable' ? 'govuk-tag--green' :
+									frontmatter.status.toLowerCase() === 'experimental' ? 'govuk-tag--yellow' :
+									frontmatter.status.toLowerCase() === 'deprecated' ? 'govuk-tag--red' :
+									'govuk-tag--grey'
+								}`}>
+									{frontmatter.status}
+								</strong>
+							</p>
+						)}
+						{frontmatter.category && (
+							<p class="govuk-body govuk-!-margin-bottom-2">
+								<strong>Category:</strong> {frontmatter.category}
+							</p>
+						)}
+						{frontmatter.description && (
+							<p class="govuk-body govuk-!-margin-bottom-0">
+								<strong>Description:</strong> {frontmatter.description}
+							</p>
+						)}
+					</div>
+				)}
 			</article>
-		</div>
-		<div class="govuk-grid-column-one-third">
-			<aside class="toc">
-				<h2 class="govuk-heading-s">On this page</h2>
-				<nav aria-label="Table of contents">
-					<ul class="govuk-list">
-						{headings
-							.filter(h => h.depth >= 1 && h.depth <= 3)
-							.map((heading) => (
-								<li class={`toc-depth-${heading.depth}`}>
-									<a href={`#${heading.slug}`} class="govuk-link">
-										{heading.text}
-									</a>
-								</li>
-							))
-						}
-					</ul>
-				</nav>
-			</aside>
 		</div>
 	</div>
 </Layout>

@@ -1,7 +1,8 @@
 ---
 layout: ../../layouts/Layout.astro
-title: Use Case Patterns
+title: Use case patterns
 activeNav: use-cases
+updated: 2026-01-08
 ---
 
 import GridRow from '../../components/grid/GridRow.astro'
@@ -14,24 +15,24 @@ export const allPatterns = getPatterns(import.meta.glob('./*.md', { eager: true 
 
 <GridRow>
     <GridColumn width="two-thirds">
-        <a href="/" class="govuk-back-link">Back</a>
+        # Use case patterns
         
-        # Use Case Patterns
-        
-        > End-to-end patterns for building complete AI-powered services in Defra.
+        <p class="govuk-body-l">
+            End-to-end patterns for building complete AI-powered services in Defra.
+        </p>
         
         Use case patterns describe full system architectures and approaches for common AI applications such as:
         - Document classification and routing
-        - Policy analysis and summarization
+        - Policy analysis and summarisation
         - Data extraction from forms and documents
 
         Each use case pattern references relevant [technical patterns](/technical/) for implementation details.
     </GridColumn>
 </GridRow>
 
-<CardContainer>
-    {allPatterns.length > 0 ? (
-        allPatterns.map(pattern => (
+{allPatterns.length > 0 ? (
+    <CardContainer>
+        {allPatterns.map(pattern => (
             <Card title={pattern.frontmatter.title} href={pattern.url}>
                 <div class="govuk-!-margin-bottom-2">
                     <strong class={`govuk-tag ${getStatusTagClass(pattern.frontmatter.status)}`}>
@@ -44,27 +45,31 @@ export const allPatterns = getPatterns(import.meta.glob('./*.md', { eager: true 
                     </p>
                 )}
                 {pattern.frontmatter.category && (
-                    <p class="govuk-body-xs govuk-!-margin-bottom-0">
+                    <p class="govuk-body-s govuk-!-margin-bottom-0 dfe-card-meta">
                         <strong>Category:</strong> {pattern.frontmatter.category}
                     </p>
                 )}
             </Card>
-        ))
-    ) : (
-        <GridColumn width="full">
-            <div class="govuk-notification-banner" role="region" aria-labelledby="govuk-notification-banner-title" data-module="govuk-notification-banner">
-                <div class="govuk-notification-banner__header">
-                    <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
-                        Information
-                    </h2>
-                </div>
-                <div class="govuk-notification-banner__content">
-                    <h3 class="govuk-notification-banner__heading">
-                        No use case patterns available yet
-                    </h3>
-                    <p class="govuk-body">We're currently working on adding use case patterns to help guide your AI implementations. Check back soon or <a class="govuk-notification-banner__link" href="/blog">read our blog</a> for updates.</p>
-                </div>
-            </div>
+        ))}
+    </CardContainer>
+) : (
+    <GridRow>
+        <GridColumn width="two-thirds">
+            <p class="govuk-body govuk-!-margin-top-6">
+                We are currently developing patterns for this section. Check back soon for updates.
+            </p>
         </GridColumn>
-    )}
-</CardContainer>
+    </GridRow>
+)}
+
+<GridRow>
+    <GridColumn width="two-thirds">
+        <p class="govuk-body-s govuk-!-margin-top-6">
+            Last updated: {new Date(frontmatter.updated).toLocaleDateString('en-GB', { 
+                day: 'numeric', 
+                month: 'long', 
+                year: 'numeric' 
+            })}
+        </p>
+    </GridColumn>
+</GridRow>

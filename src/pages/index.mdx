@@ -9,18 +9,22 @@ import GridRow from '../components/grid/GridRow.astro';
 import GridColumn from '../components/grid/GridColumn.astro';
 
 <GridRow>
-    <GridColumn width="three-quarters">
+    <GridColumn width="two-thirds">
         # Defra AI Patterns
-        > AI patterns and guidance for delivering services utilising Artificial Intelligence in the Department for Environment, Food & Rural Affairs (Defra).
+
+        <p class="govuk-body-l">
+            Patterns and guidance for delivering services using artificial intelligence 
+            in the Department for Environment, Food and Rural Affairs (Defra).
+        </p>
     </GridColumn>
 </GridRow>
 
 <CardContainer>
-  <Card title="Use Case Patterns" href="/use-cases/">
+  <Card title="Use case patterns" href="/use-cases/">
     End-to-end patterns for building AI-powered services
   </Card>
-  <Card title="Technical Patterns" href="/technical/">
-    Tehnical implementation patterns and best practices
+  <Card title="Technical patterns" href="/technical/">
+    Technical implementation patterns and best practices
   </Card>
   <Card title="Blog" href="/blog/">
     Read our latest articles and updates

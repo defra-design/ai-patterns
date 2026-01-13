@@ -3,6 +3,7 @@
 @import "govuk-frontend";
 
 @import "./components/header/header";
+@import "./components/service-navigation/service-navigation";
 @import "./components/card/card";
 
 html, body {
@@ -69,24 +70,37 @@ blockquote {
     }
 }
 
-.toc {
-    position: sticky;
-    top: 20px;
-}
-
-.toc-depth-1 {
-    margin-left: 0;
-}
-
-.toc-depth-2 {
-    margin-left: 1rem;
-}
-
-.toc-depth-3 {
-    margin-left: 2rem;
-}
-
 .astro-code {
     padding: 20px;
     border-radius: 10px;
+}
+
+// Blog posts list on overview page
+.blog-posts {
+    border-top: 1px solid $govuk-border-colour;
+    margin-top: govuk-spacing(6);
+    
+    .blog-post {
+        padding: govuk-spacing(5) 0;
+        border-bottom: 1px solid $govuk-border-colour;
+
+        // Heading links - no underline until hover/focus
+        h2 a {
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+                text-decoration-thickness: max(3px, .1875rem, .12em);
+                text-underline-offset: .1em;
+            }
+
+            &:focus {
+                @include govuk-focused-text;
+            }
+        }
+    }
+}
+
+.blog-meta {
+    color: $govuk-secondary-text-colour;
 }

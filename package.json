@@ -15,6 +15,9 @@
   },
   "devDependencies": {
     "@fontsource/roboto": "5.2.9",
+    "autoprefixer": "10.4.20",
+    "cssnano": "7.0.6",
+    "cssnano-preset-default": "7.0.6",
     "eslint": "9.39.2",
     "neostandard": "0.12.2",
     "npm-run-all2": "8.0.4",

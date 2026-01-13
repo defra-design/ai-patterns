@@ -2,9 +2,8 @@
 layout: ../../layouts/Layout.astro
 title: Blog
 activeNav: blog
+updated: 2026-01-08
 ---
-
-import { getCollection } from 'astro:content'
 
 import GridRow from '../../components/grid/GridRow.astro'
 import GridColumn from '../../components/grid/GridColumn.astro'
@@ -14,29 +13,41 @@ export const sortedPosts = getBlogPosts(import.meta.glob('./*.md', { eager: true
 
 <GridRow>
     <GridColumn width="two-thirds">
-        <a href="/" class="govuk-back-link">Back</a>
-        
-        # AI Patterns Blog
-        > This blog shares our experiences implementing AI solutions, lessons learned, and guidance for teams working with artificial intelligence in government services.
+        # Blog
 
-        {sortedPosts.map(post => (
-            <article class="govuk-!-margin-bottom-6">
-                <h3 class="govuk-heading-m">
-                    {post.frontmatter.date && (
-                        <time datetime={post.frontmatter.date} class="govuk-tag govuk-!-margin-right-2">
-                            {new Date(post.frontmatter.date).toLocaleDateString('en-GB', { 
-                                day: 'numeric', 
-                                month: 'long', 
-                                year: 'numeric' 
-                            })}
-                        </time>
-                    )}
-                    <a href={post.url} class="govuk-link">{post.frontmatter.title}</a>
-                </h3>
-                {post.frontmatter.description && (
-                    <p class="govuk-body">{post.frontmatter.description}</p>
-                )}
-            </article>
-        ))}
+        <p class="govuk-body-l">
+            Sharing our experiences implementing AI solutions, lessons learned, and guidance for teams working with artificial intelligence in government services.
+        </p>
+
+        <div class="blog-posts">
+            {sortedPosts.length > 0 ? (
+                sortedPosts.map(post => (
+                    <article class="blog-post">
+                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
+                            <a href={post.url} class="govuk-link">{post.frontmatter.title}</a>
+                        </h2>
+                        {post.frontmatter.date && (
+                            <p class="govuk-body-s blog-meta">
+                                Posted on <time datetime={post.frontmatter.date}>
+                                    {new Date(post.frontmatter.date).toLocaleDateString('en-GB', { 
+                                        day: 'numeric', 
+                                        month: 'long', 
+                                        year: 'numeric' 
+                                    })}
+                                </time>
+                            </p>
+                        )}
+                        {post.frontmatter.description && (
+                            <p class="govuk-body">{post.frontmatter.description}</p>
+                        )}
+                        <a href={post.url} class="govuk-link">Read this post</a>
+                    </article>
+                ))
+            ) : (
+                <p class="govuk-body govuk-!-margin-top-6">
+                    We are currently developing blog posts for this section. Check back soon for updates.
+                </p>
+            )}
+        </div>
     </GridColumn>
 </GridRow>

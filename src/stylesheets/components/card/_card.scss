@@ -1,36 +1,76 @@
-.card-container {
+// DfE Card Pattern
+// Based on https://design.education.gov.uk/design-system/components/card
+
+.dfe-grid-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
+    gap: govuk-spacing(4);
+    margin-top: govuk-spacing(6);
+    margin-bottom: govuk-spacing(6);
+}
 
-    .card {
-        color: #1d70b8;
-        display: flex;
-        flex-direction: column;
-        background-color: #ffffff;
-        border: 1px solid #dcdcdc;
-        flex: 1 1 0px;
-        min-width: 250px;
-        position: relative;
+.dfe-card {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 280px;
+    max-width: 100%;
+    background-color: govuk-colour("white");
+    border: 1px solid $govuk-border-colour;
+    position: relative;
 
-        a::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
-
-        a:visited {
-            color: #1d70b8;
-        }
-
-        .content {
-            padding: 20px;
-            display: flex;
-            flex-grow: 1;
-            flex-direction: column;
-        }
+    @include govuk-media-query($from: tablet) {
+        max-width: calc(33.333% - #{govuk-spacing(4)} * 2 / 3);
     }
+
+    // Hover state for entire card
+    &:hover {
+        border-color: govuk-colour("dark-grey");
+    }
+
+    // Focus state handled by the link
+    &:focus-within {
+        border-color: govuk-colour("black");
+    }
+}
+
+.dfe-card-container {
+    padding: govuk-spacing(4);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    // Remove bottom margin from last element
+    > *:last-child {
+        margin-bottom: 0;
+    }
+}
+
+// Card header link - makes entire card clickable
+.dfe-card-link--header {
+    text-decoration: none;
+
+    &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+
+    &:hover {
+        text-decoration: underline;
+        text-decoration-thickness: max(3px, .1875rem, .12em);
+        text-underline-offset: .1em;
+    }
+
+    &:focus {
+        @include govuk-focused-text;
+    }
+}
+
+// Meta information styling
+.dfe-card-meta {
+    margin-top: auto;
+    padding-top: govuk-spacing(2);
 }

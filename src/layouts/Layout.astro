@@ -22,32 +22,34 @@ const activeNav = frontmatter.activeNav;
 		<script is:inline>
     		document.body.className += ' js-enabled' + ('noModule' in HTMLScriptElement.prototype ? ' govuk-frontend-supported' : '');
   		</script>
-		<header class="govuk-header" data-module="govuk-header">
-			<div class="govuk-header__container govuk-width-container">
-				<div class="govuk-header__logo">
-					<a href="/" class="govuk-header__link">
-						<span class="govuk-header__logo-container">Department<br>for Environment,<br>Food &amp; Rural Affairs</span>
-					</a>
-				</div>
+		<a href="#main-content" class="govuk-skip-link" data-module="govuk-skip-link">
+			Skip to main content
+		</a>
+	<header class="govuk-header" data-module="govuk-header">
+		<div class="govuk-header__container govuk-width-container">
+			<div class="govuk-header__logo">
+				<a href="/" class="govuk-header__link govuk-header__link--homepage">
+					<span class="govuk-header__logo-container">Defra</span>
+				</a>
 			</div>
-		</header>
-		<section aria-label="Service information" class="govuk-service-navigation" data-module="govuk-service-navigation">
-			<div class="govuk-width-container">
-				<div class="govuk-service-navigation__container">
-				<span class="govuk-service-navigation__service-name">
-					<a href="/" class="govuk-service-navigation__link">
-						AI Patterns
-					</a>
-				</span>
-				<nav aria-label="Service navigation" class="govuk-service-navigation__wrapper">
-					<ul class="govuk-service-navigation__list">
+		</div>
+	</header>
+	<div class="govuk-service-navigation" data-module="govuk-service-navigation">
+		<div class="govuk-width-container">
+			<div class="govuk-service-navigation__container">
+				<nav aria-label="Menu" class="govuk-service-navigation__wrapper">
+					<button type="button" class="govuk-service-navigation__toggle govuk-js-service-navigation-toggle" aria-controls="navigation" hidden>
+						Menu
+					</button>
+					<ul class="govuk-service-navigation__list" id="navigation">
 						{[
-							{ key: 'use-cases', label: 'Use Cases', href: '/use-cases' },
+							{ key: 'home', label: 'AI Patterns', href: '/' },
+							{ key: 'use-cases', label: 'Use cases', href: '/use-cases' },
 							{ key: 'technical', label: 'Technical', href: '/technical' },
 							{ key: 'blog', label: 'Blog', href: '/blog' }
 						].map(({ key, label, href }) => (
 							<li class={`govuk-service-navigation__item ${activeNav === key ? 'govuk-service-navigation__item--active' : ''}`}>
-								<a class="govuk-service-navigation__link" href={href} aria-current={activeNav === key}>
+								<a class="govuk-service-navigation__link" href={href} aria-current={activeNav === key ? 'true' : undefined}>
 									{activeNav === key
 										? <strong class="govuk-service-navigation__active-fallback">{label}</strong>
 										: label
@@ -57,9 +59,9 @@ const activeNav = frontmatter.activeNav;
 						))}
 					</ul>
 				</nav>
-				</div>
 			</div>
-		</section>
+		</div>
+	</div>
 		<main class="govuk-main-wrapper" id="main-content">
 			<div class="govuk-width-container">
 				<slot />
@@ -67,12 +69,18 @@ const activeNav = frontmatter.activeNav;
 		</main>
 		<footer class="govuk-footer">
 			<div class="govuk-width-container">
-			<div class="govuk-footer__meta">
-				<div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
-					<!-- Add GitHub Repo Link -->
-					<a href="https://github.com/DEFRA/defra-ai-patterns" class="govuk-footer__link">GitHub</a>
+				<div class="govuk-footer__meta">
+					<div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+						<span class="govuk-footer__licence-description">
+							Department for Environment, Food and Rural Affairs
+						</span>
+						<ul class="govuk-footer__inline-list govuk-!-margin-top-2">
+							<li class="govuk-footer__inline-list-item">
+								<a href="https://github.com/DEFRA/defra-ai-patterns" class="govuk-footer__link">GitHub</a>
+							</li>
+						</ul>
+					</div>
 				</div>
-			</div>
 			</div>
 		</footer>
 

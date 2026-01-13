@@ -1,0 +1,132 @@
+// Service navigation component styles
+// Based on GOV.UK Design System service navigation with Defra green branding
+// Override govuk-frontend default styles completely
+
+$defra-light-green: #e6f4eb;
+
+.govuk-service-navigation {
+    background-color: $defra-light-green;
+    border-bottom: none;
+    
+    // Reset all possible underline sources within the component
+    * {
+        box-shadow: none !important;
+    }
+}
+
+.govuk-service-navigation__container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.govuk-service-navigation__wrapper {
+    width: 100%;
+}
+
+.govuk-service-navigation__toggle {
+    @include govuk-font($size: 16);
+    display: none;
+    
+    @include govuk-media-query($until: tablet) {
+        display: block;
+        background-color: transparent;
+        border: none;
+        color: $govuk-link-colour;
+        cursor: pointer;
+        padding: govuk-spacing(1) 0;
+        text-decoration: underline;
+        
+        &:hover {
+            text-decoration-thickness: max(3px, .1875rem, .12em);
+        }
+        
+        &:focus {
+            @include govuk-focused-text;
+        }
+    }
+}
+
+.govuk-service-navigation__list {
+    @include govuk-font($size: 16);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    
+    @include govuk-media-query($until: tablet) {
+        flex-direction: column;
+    }
+}
+
+.govuk-service-navigation__item {
+    margin: 0;
+    padding: 0;
+    border: none !important;
+    
+    &:not(:last-child) {
+        margin-right: govuk-spacing(4);
+    }
+}
+
+// Reset all link styles completely
+.govuk-service-navigation__link {
+    @include govuk-font($size: 16);
+    display: block;
+    padding: 10px 0;
+    color: $govuk-link-colour !important;
+    text-decoration: none !important;
+    border: none !important;
+    border-bottom: 4px solid transparent !important;
+    background: none !important;
+    
+    &:link,
+    &:visited {
+        color: $govuk-link-colour !important;
+        text-decoration: none !important;
+    }
+    
+    &:hover {
+        color: $govuk-link-hover-colour !important;
+        text-decoration: underline !important;
+        text-decoration-thickness: max(3px, .1875rem, .12em);
+        text-underline-offset: .1578em;
+        border-bottom-color: transparent !important;
+    }
+    
+    &:focus {
+        @include govuk-focused-text;
+    }
+    
+    // Override aria-current styles from govuk-frontend
+    &[aria-current],
+    &[aria-current="true"],
+    &[aria-current="page"] {
+        text-decoration: none !important;
+        border-bottom-color: transparent !important;
+    }
+}
+
+// Active state - show bottom border indicator only
+.govuk-service-navigation__item--active .govuk-service-navigation__link {
+    border-bottom: 4px solid $govuk-link-colour !important;
+    text-decoration: none !important;
+    
+    &:link,
+    &:visited,
+    &[aria-current],
+    &[aria-current="true"] {
+        border-bottom: 4px solid $govuk-link-colour !important;
+        text-decoration: none !important;
+    }
+    
+    &:hover {
+        text-decoration: underline !important;
+        border-bottom: 4px solid $govuk-link-colour !important;
+    }
+}
+
+.govuk-service-navigation__active-fallback {
+    font-weight: normal;
+}

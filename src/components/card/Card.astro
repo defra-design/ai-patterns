@@ -7,11 +7,11 @@ interface Props {
 const { title, href } = Astro.props;
 ---
 
-<div class="card">
-  <div class="content">
-    <h2 class="govuk-heading-m">
-      <a href={href} class="card-link">{title}</a>
-    </h2>
+<div class="dfe-card">
+  <div class="dfe-card-container">
+    <h3 class="govuk-heading-m">
+      <a href={href} class="govuk-link govuk-link--no-visited-state dfe-card-link--header">{title}</a>
+    </h3>
     <slot />
   </div>
 </div>
