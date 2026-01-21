@@ -2,7 +2,7 @@
 
 ## AI Assistant Behavior
 As an AI assistant creating a GDS compliant frontend you should:
-- **Prioritize accessibility** and government standards in all suggestions
+- **Prioritise accessibility** and government standards in all suggestions
 - **Use semantic search** to understand existing patterns before suggesting new code
 - **Read existing files** to understand the current implementation before making changes
 - **Follow the established folder structure** and naming conventions
@@ -178,7 +178,7 @@ When creating:
 
 ## Quality Checklist
 Before suggesting any code changes, ensure:
-- [ ] Accessibility requirements are met
+- [ ] Accessibility WCAG 2.2 requirements are met
 - [ ] GOV.UK Design System components are used correctly
 - [ ] Content follows government style guide
 - [ ] Error handling and validation is implemented
